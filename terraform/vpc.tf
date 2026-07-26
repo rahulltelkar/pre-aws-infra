@@ -31,7 +31,7 @@ resource "aws_subnet" "public_1" {
     {
       Name = "${var.environment}-subnet-1"
 
-      "kubernetes.io/role/elb" = "1"
+      "kubernetes.io/role/elb"                    = "1"
       "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     }
   )
@@ -47,7 +47,7 @@ resource "aws_subnet" "public_2" {
     {
       Name = "${var.environment}-subnet-2"
 
-      "kubernetes.io/role/elb" = "1"
+      "kubernetes.io/role/elb"                    = "1"
       "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     }
   )
