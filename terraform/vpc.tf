@@ -30,6 +30,8 @@ resource "aws_subnet" "public_1" {
     local.common_tags,
     {
       Name = "${var.environment}-subnet-1"
+
+      "kubernetes.io/role/elb" = "1"
     }
   )
 }
@@ -43,6 +45,8 @@ resource "aws_subnet" "public_2" {
     local.common_tags,
     {
       Name = "${var.environment}-subnet-2"
+
+      "kubernetes.io/role/elb" = "1"
     }
   )
 }
