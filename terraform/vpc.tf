@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "main" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.environment}-vpc"
+      Name = "${var.environment}-igw"
     }
   )
 }
@@ -32,6 +32,7 @@ resource "aws_subnet" "public_1" {
       Name = "${var.environment}-subnet-1"
 
       "kubernetes.io/role/elb" = "1"
+      "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     }
   )
 }
@@ -47,6 +48,7 @@ resource "aws_subnet" "public_2" {
       Name = "${var.environment}-subnet-2"
 
       "kubernetes.io/role/elb" = "1"
+      "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     }
   )
 }
