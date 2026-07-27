@@ -155,11 +155,3 @@ This separation of responsibilities keeps Terraform focused on infrastructure pr
 | Managed Node Group | Application Load Balancer (via AWS Load Balancer Controller) |
 | S3 Backend | |
 | DynamoDB Lock Table | |
-
-### Why This Design?
-
-Separating infrastructure provisioning from application deployment follows Infrastructure as Code (IaC) best practices.
-
-Terraform is responsible for provisioning long-lived cloud infrastructure, while Kubernetes manages the lifecycle of application workloads running on the cluster.
-
-This approach improves modularity, simplifies infrastructure maintenance, and aligns with production deployment patterns commonly used in modern Platform Engineering teams.
