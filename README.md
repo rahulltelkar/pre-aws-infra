@@ -241,3 +241,51 @@ This project intentionally separates infrastructure provisioning from applicatio
 - **AWS Load Balancer Controller** bridges Kubernetes and AWS by dynamically creating an Application Load Balancer whenever an Ingress resource is deployed.
 
 This separation follows Infrastructure as Code (IaC) best practices and mirrors production deployment workflows.
+
+## Prerequisites
+
+Before deploying the infrastructure, ensure the following prerequisites are met.
+
+| Requirement | Purpose |
+|------------|---------|
+| AWS Account | Used to provision all cloud resources. |
+| IAM User or Role | Must have sufficient permissions to create networking, IAM, and EKS resources. |
+| Terraform | Used to provision AWS infrastructure. |
+| AWS CLI | Used to authenticate with AWS and configure access to the EKS cluster. |
+| kubectl | Used to deploy and manage Kubernetes resources. |
+| Git | Used to clone the project repository. |
+| Amazon S3 Bucket | Stores the remote Terraform state file. |
+| Amazon DynamoDB Table | Provides Terraform state locking. |
+
+### Required Tool Versions
+
+The project was developed and tested using the following tool versions.
+
+| Tool | Version |
+|------|---------|
+| Terraform | >= 1.x |
+| AWS CLI | v2 |
+| kubectl | Compatible with the target Kubernetes version |
+
+### AWS Permissions
+
+The IAM user or role executing Terraform should have permissions to create and manage resources including:
+
+- Amazon VPC
+- Amazon EKS
+- EC2
+- IAM
+- Elastic Load Balancing (ALB)
+- Amazon S3
+- Amazon DynamoDB
+
+In production environments, permissions should follow the principle of least privilege.
+
+### Remote Terraform Backend
+
+Terraform uses a remote backend to store the infrastructure state.
+
+- **Amazon S3** stores the Terraform state file.
+- **Amazon DynamoDB** provides state locking to prevent concurrent Terraform operations.
+
+Using a remote backend enables collaboration, improves reliability, and prevents state corruption during simultaneous deployments.
