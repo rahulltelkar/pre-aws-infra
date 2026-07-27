@@ -167,7 +167,6 @@ terraform/
 ├── versions.tf                # Terraform and provider version constraints
 ├── variables.tf               # Input variable definitions
 ├── terraform.tfvars           # Environment-specific variable values
-├── main.tf                    # Common Terraform configuration
 ├── vpc.tf                     # VPC, subnets, route tables, and networking
 ├── eks.tf                     # Amazon EKS cluster and managed node group
 ├── iam.tf                     # IAM roles and policies
