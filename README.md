@@ -72,7 +72,7 @@ The deployment follows the sequence below:
 |-----------|---------|
 | Terraform | Provisions AWS infrastructure using Infrastructure as Code (IaC). |
 | Amazon VPC | Provides network isolation for the EKS cluster. |
-| Public & Private Subnets | Separate internet-facing resources from worker nodes. |
+| Public Subnets | Separate internet-facing resources from worker nodes. |
 | Internet Gateway | Enables internet connectivity for public resources. |
 | Amazon EKS | Managed Kubernetes control plane. |
 | Managed Node Group | Provides EC2 worker nodes to run Kubernetes workloads. |
