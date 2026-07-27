@@ -1,4 +1,4 @@
-#### AWS EKS Two-Tier Application Deployment using Terraform
+# AWS EKS Two-Tier Application Deployment using Terraform
 
 Deploy a production-ready Amazon Elastic Kubernetes Service (EKS) cluster using Terraform and host a two-tier application on Kubernetes with AWS Application Load Balancer (ALB) Ingress.
 
@@ -27,7 +27,7 @@ The project demonstrates the end-to-end workflow of provisioning cloud infrastru
 
 > **Note:** This project focuses on infrastructure provisioning and Kubernetes deployment. The application used is intentionally simple to emphasize the platform engineering aspects of the solution.
 
-## Solution Architecture
+# Solution Architecture
 
 The following diagram illustrates the high-level architecture of the solution, showing how Terraform provisions the AWS infrastructure and how Kubernetes resources interact to expose the application through an AWS Application Load Balancer.
 
