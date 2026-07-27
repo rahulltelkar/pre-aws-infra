@@ -389,3 +389,97 @@ aws eks describe-nodegroup \
 - `terraform plan` allows infrastructure changes to be reviewed before they are applied.
 - `terraform apply` provisions the infrastructure in AWS.
 - Verifying the deployment confirms that the EKS control plane and managed worker nodes are available before deploying Kubernetes workloads.
+
+  ## Infrastructure Verification
+
+After Terraform successfully provisions the infrastructure, verify that all AWS resources and the Amazon EKS cluster are functioning as expected.
+
+---
+
+### Verify Terraform Outputs
+
+Display the Terraform outputs generated during deployment.
+
+```bash
+terraform output
+```
+
+Review the output values to confirm that the expected infrastructure resources have been created successfully.
+
+---
+
+### Verify the Amazon EKS Cluster
+
+List the available Amazon EKS clusters.
+
+```bash
+aws eks list-clusters
+```
+
+Example output:
+
+```text
+{
+    "clusters": [
+        "platform-demo-eks"
+    ]
+}
+```
+
+---
+
+### Configure kubectl
+
+Update the local kubeconfig to communicate with the Amazon EKS cluster.
+
+```bash
+aws eks update-kubeconfig \
+  --region <aws-region> \
+  --name <cluster-name>
+```
+
+---
+
+### Verify Worker Nodes
+
+Verify that the managed worker nodes have successfully joined the cluster.
+
+```bash
+kubectl get nodes
+```
+
+Expected output:
+
+```text
+NAME                                           STATUS   ROLES    AGE   VERSION
+ip-10-0-1-120.ap-south-1.compute.internal      Ready    <none>   XXm   v1.xx.x
+ip-10-0-2-145.ap-south-1.compute.internal      Ready    <none>   XXm   v1.xx.x
+```
+
+---
+
+### Verify System Pods
+
+Verify that the Kubernetes system components are running correctly.
+
+```bash
+kubectl get pods -n kube-system
+```
+
+Ensure that critical components such as CoreDNS, kube-proxy, VPC CNI, and the AWS Load Balancer Controller (if installed) are in the **Running** state.
+
+---
+
+### Verify the Remote Backend
+
+Confirm that the Terraform state file has been stored in the configured Amazon S3 bucket.
+
+```bash
+aws s3 ls s3://<terraform-state-bucket>
+```
+
+Verify that the DynamoDB table used for state locking exists.
+
+```bash
+aws dynamodb list-tables
+```
