@@ -946,3 +946,106 @@ Examples include:
 - Policy-as-Code validation
 - Automated infrastructure testing
 - Infrastructure testing
+
+## Future Improvements
+
+The following enhancements can be implemented to make this project more production-ready and further improve scalability, security, and maintainability.
+
+---
+
+### Refactor into Reusable Terraform Modules
+
+Refactor the infrastructure into reusable Terraform modules for networking, Amazon EKS, IAM, and security resources.
+
+Benefits include:
+
+- Improved code reusability
+- Easier maintenance
+- Better scalability
+- Standardized infrastructure deployments
+
+---
+
+### Deploy Worker Nodes in Private Subnets
+
+Move Amazon EKS worker nodes from public subnets to private subnets with outbound internet access through a NAT Gateway.
+
+This improves the security posture by reducing direct internet exposure.
+
+---
+
+### Multi-Environment Support
+
+Support multiple environments such as Development, Staging, and Production using:
+
+- Terraform Workspaces
+- Separate state files
+- Environment-specific variable files
+
+---
+
+### CI/CD Pipeline Enhancements
+
+Enhance the existing CI/CD pipeline by adding:
+
+- Manual approval stages
+- Automated rollback strategies
+- Notification about Deployement status
+
+---
+
+### Infrastructure Security Enhancements
+
+Implement additional security controls such as:
+
+- AWS Secrets Manager
+- AWS WAF
+- Network Policies
+- Pod Security Admission
+- IAM policy hardening
+
+---
+
+### Monitoring and Logging
+
+Integrate a complete observability stack including:
+
+- Prometheus
+- Grafana
+- Fluent Bit
+- Amazon CloudWatch
+- Loki
+
+---
+
+### Infrastructure Quality Checks
+
+Improve infrastructure validation by integrating:
+
+- Static code analysis
+- Terraform security scanning
+- Policy-as-Code validation
+- Automated infrastructure testing
+
+---
+
+### GitOps Deployment
+
+Adopt GitOps practices using tools such as:
+
+- Flux CD
+- Argo CD
+- Fleet From Rancher
+
+to automate Kubernetes application deployment and configuration management.
+
+---
+
+### Cluster Autoscaling
+
+Implement automated node scaling using:
+
+- Karpenter
+- Kubernetes Cluster Autoscaler
+
+to improve resource utilization and optimize infrastructure costs.
