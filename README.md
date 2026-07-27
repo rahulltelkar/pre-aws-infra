@@ -155,3 +155,34 @@ This separation of responsibilities keeps Terraform focused on infrastructure pr
 | Managed Node Group | Application Load Balancer (via AWS Load Balancer Controller) |
 | S3 Backend | |
 | DynamoDB Lock Table | |
+
+## Repository Structure
+
+The repository is organized to separate infrastructure components into logical Terraform configuration files. This modular structure improves readability, maintainability, and scalability.
+
+```text
+terraform/
+├── backend.tf                 # Remote backend configuration (S3 & DynamoDB)
+├── provider.tf                # AWS provider configuration
+├── versions.tf                # Terraform and provider version constraints
+├── variables.tf               # Input variable definitions
+├── terraform.tfvars           # Environment-specific variable values
+├── main.tf                    # Common Terraform configuration
+├── vpc.tf                     # VPC, subnets, route tables, and networking
+├── eks.tf                     # Amazon EKS cluster and managed node group
+├── iam.tf                     # IAM roles and policies
+├── oidc.tf                    # IAM OIDC provider configuration
+├── alb-irsa.tf                # IAM Role for Service Account (AWS Load Balancer Controller)
+├── security-groups.tf         # Security Group definitions
+├── locals.tf                  # Local values
+├── outputs.tf                 # Terraform outputs
+└── policies/                  # Custom IAM policy documents
+```
+### Why This Structure?
+
+Instead of placing all resources into a single Terraform file, the infrastructure is organized by responsibility. This modular approach offers several benefits:
+
+- Improves readability by grouping related resources.
+- Simplifies troubleshooting and future enhancements.
+- Encourages code reuse and easier collaboration.
+- Aligns with Infrastructure as Code (IaC) best practices followed in production environments.
