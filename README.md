@@ -702,3 +702,152 @@ are cleaned up properly, preventing dependency issues during infrastructure dest
 If the remote backend will be reused for future deployments, remove the Amazon S3 bucket and DynamoDB table from the Terraform state before destroying the infrastructure.
 
 This prevents accidental deletion of backend resources while allowing Terraform to safely remove the remaining infrastructure.
+
+## Troubleshooting
+
+The following are some common issues that may be encountered while provisioning or destroying the infrastructure, along with their possible causes and resolutions.
+
+---
+
+### Terraform Backend Initialization Fails
+
+**Issue**
+
+Terraform fails during `terraform init` with backend-related errors.
+
+**Possible Causes**
+
+- Incorrect Amazon S3 bucket name
+- Missing DynamoDB table
+- Insufficient AWS IAM permissions
+- Incorrect AWS CLI profile or region
+
+**Resolution**
+
+- Verify the S3 bucket exists.
+- Verify the DynamoDB table exists.
+- Confirm AWS credentials are configured correctly.
+- Ensure the configured AWS Region matches the backend configuration.
+
+---
+
+### Unable to Connect to the Amazon EKS Cluster
+
+**Issue**
+
+`kubectl` cannot communicate with the Kubernetes cluster.
+
+**Possible Causes**
+
+- kubeconfig has not been updated
+- Incorrect AWS profile
+- Incorrect cluster name
+- Expired AWS session
+
+**Resolution**
+
+Update the kubeconfig.
+
+```bash
+aws eks update-kubeconfig \
+  --region <aws-region> \
+  --name <cluster-name>
+```
+
+Verify the current context.
+
+```bash
+kubectl config current-context
+```
+
+---
+
+### Worker Nodes Do Not Join the Cluster
+
+**Issue**
+
+The Amazon EKS cluster is created, but worker nodes remain unavailable.
+
+**Possible Causes**
+
+- IAM role configuration issues
+- Node group provisioning failure
+- Networking or security group misconfiguration
+
+**Resolution**
+
+- Verify the node group status in the AWS Console.
+- Check IAM role permissions.
+- Verify security group rules.
+- Confirm the node group has reached the **Active** state.
+
+---
+
+### Terraform Destroy Fails
+
+**Issue**
+
+`terraform destroy` does not complete successfully.
+
+**Possible Causes**
+
+- Kubernetes-created AWS resources still exist.
+- Application Load Balancer (ALB) has not been deleted.
+- Elastic Network Interfaces (ENIs) are still attached.
+- Security Groups remain in use.
+
+**Resolution**
+
+- Delete Kubernetes Ingress resources.
+- Verify that the AWS Load Balancer Controller has removed the ALB.
+- Remove any remaining dependent AWS resources.
+- Run `terraform destroy` again.
+
+---
+
+### Terraform State Lock Error
+
+**Issue**
+
+Terraform reports that the state file is locked.
+
+**Possible Causes**
+
+- Another Terraform operation is in progress.
+- A previous Terraform operation exited unexpectedly.
+
+**Resolution**
+
+Verify that no other Terraform process is running.
+
+If the lock is stale, remove it using:
+
+```bash
+terraform force-unlock <LOCK_ID>
+```
+
+Use this command only after confirming that no active Terraform operation is using the state.
+
+---
+
+### AWS Authentication Errors
+
+**Issue**
+
+Terraform or AWS CLI commands fail due to authentication or authorization errors.
+
+**Possible Causes**
+
+- Expired AWS credentials
+- Incorrect AWS CLI profile
+- Missing IAM permissions
+
+**Resolution**
+
+Verify the active AWS identity.
+
+```bash
+aws sts get-caller-identity
+```
+
+Confirm that the IAM user or role has the required permissions to provision the infrastructure.
