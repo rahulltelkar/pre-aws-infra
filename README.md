@@ -289,3 +289,103 @@ Terraform uses a remote backend to store the infrastructure state.
 - **Amazon DynamoDB** provides state locking to prevent concurrent Terraform operations.
 
 Using a remote backend enables collaboration, improves reliability, and prevents state corruption during simultaneous deployments.
+
+## Infrastructure Deployment
+
+Follow the steps below to provision the AWS infrastructure using Terraform.
+
+### Step 1: Clone the Repository
+
+```bash
+git clone <repository-url>
+cd <repository-name>/terraform
+```
+
+---
+
+### Step 2: Configure the Terraform Backend
+
+Ensure the remote backend configuration points to the existing Amazon S3 bucket and DynamoDB table.
+
+Example:
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket         = "<your-s3-bucket>"
+    key            = "terraform.tfstate"
+    region         = "<aws-region>"
+    dynamodb_table = "<your-dynamodb-table>"
+    encrypt        = true
+  }
+}
+```
+
+---
+
+### Step 3: Initialize Terraform
+
+Initialize the working directory and download the required providers.
+
+```bash
+terraform init
+```
+
+---
+
+### Step 4: Review the Execution Plan
+
+Generate an execution plan before provisioning infrastructure.
+
+```bash
+terraform plan
+```
+
+Review the output carefully to understand which resources Terraform will create or modify.
+
+---
+
+### Step 5: Provision the Infrastructure
+
+Create the AWS infrastructure.
+
+```bash
+terraform apply
+```
+
+Confirm the execution plan when prompted.
+
+Terraform provisions resources including:
+
+- Amazon VPC
+- Public Subnets
+- Internet Gateway
+- Route Tables
+- Security Groups
+- IAM Roles
+- IAM OIDC Provider
+- Amazon EKS Cluster
+- Managed Node Group
+
+### Verify the Deployment
+
+Verify that the Amazon EKS cluster has been created successfully.
+
+```bash
+aws eks list-clusters
+```
+
+Verify the managed node group.
+
+```bash
+aws eks describe-nodegroup \
+  --cluster-name <cluster-name> \
+  --nodegroup-name <nodegroup-name>
+```
+
+### Why These Steps?
+
+- `terraform init` initializes the working directory and downloads the required providers.
+- `terraform plan` allows infrastructure changes to be reviewed before they are applied.
+- `terraform apply` provisions the infrastructure in AWS.
+- Verifying the deployment confirms that the EKS control plane and managed worker nodes are available before deploying Kubernetes workloads.
