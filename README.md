@@ -483,3 +483,93 @@ Verify that the DynamoDB table used for state locking exists.
 ```bash
 aws dynamodb list-tables
 ```
+
+## Infrastructure Cleanup
+
+Once the infrastructure is no longer required, it can be safely removed using Terraform.
+
+---
+
+### Destroy Infrastructure
+
+Run the following command to destroy all infrastructure managed by Terraform.
+
+```bash
+terraform destroy
+```
+
+Review the execution plan carefully before confirming the destroy operation.
+
+Terraform removes the managed AWS resources in the reverse order of their dependencies.
+
+---
+
+### Preserve the Remote Backend
+
+This project uses an Amazon S3 bucket and Amazon DynamoDB table as the Terraform remote backend.
+
+These backend resources are intentionally **not** destroyed because they store the Terraform state file and state lock information.
+
+If you intend to reuse the backend for future Terraform projects, remove the backend resources from the Terraform state before running `terraform destroy`.
+
+Example:
+
+```bash
+terraform state rm aws_s3_bucket.terraform_state
+
+terraform state rm aws_dynamodb_table.terraform_lock
+```
+
+This removes the backend resources from Terraform state without deleting them from AWS.
+
+### Verify Resource Cleanup
+
+After Terraform completes successfully, verify that infrastructure resources have been removed.
+
+Verify that no EKS clusters remain.
+
+```bash
+aws eks list-clusters
+```
+
+Verify that the VPC has been removed.
+
+```bash
+aws ec2 describe-vpcs
+```
+
+Verify that the Terraform backend still exists.
+
+```bash
+aws s3 ls
+
+aws dynamodb list-tables
+```
+
+### Cleanup Best Practices
+
+Before destroying the infrastructure:
+
+- Remove any Kubernetes applications deployed on the cluster.
+- Delete Kubernetes Ingress resources so the AWS Load Balancer Controller can remove the associated Application Load Balancer (ALB).
+- Verify that no AWS resources created outside Terraform remain attached to the VPC.
+- Preserve the Terraform remote backend if it will be reused.
+
+### Lessons Learned
+
+During testing, an Application Load Balancer (ALB) created by the AWS Load Balancer Controller prevented Terraform from deleting the VPC.
+
+The ALB created additional AWS resources, including:
+
+- Elastic Network Interfaces (ENIs)
+- Security Groups
+
+Because these resources were not managed by Terraform, they continued to exist after the Kubernetes cluster was removed, preventing the VPC from being destroyed.
+
+The issue was resolved by:
+
+1. Deleting the Application Load Balancer.
+2. Removing the associated Security Groups.
+3. Running `terraform destroy` again.
+
+This highlights the importance of cleaning up Kubernetes-managed AWS resources before destroying the underlying infrastructure.
