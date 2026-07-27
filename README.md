@@ -850,7 +850,7 @@ aws sts get-caller-identity
 
 Confirm that the IAM user or role has the required permissions to provision the infrastructure.
 
-## Known Limitations
+# Known Limitations
 
 This project was developed as a demonstration of provisioning an Amazon EKS cluster using Terraform for learning and portfolio purposes. To keep the project focused and within practical constraints such as development time and AWS Free Tier/cost considerations, some production-grade features and best practices were not implemented
 
@@ -945,7 +945,7 @@ Examples include:
 - Automated infrastructure testing
 - Infrastructure testing
 
-## Future Improvements
+# Future Improvements
 
 The following enhancements can be implemented to make this project more production-ready and further improve scalability, security, and maintainability.
 
