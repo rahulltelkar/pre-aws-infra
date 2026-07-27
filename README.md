@@ -854,7 +854,9 @@ Confirm that the IAM user or role has the required permissions to provision the 
 
 ## Known Limitations
 
-This project was developed as a demonstration of provisioning an Amazon EKS cluster using Terraform and is intended for learning and portfolio purposes. The following limitations should be considered before using it in a production environment.
+This project was developed as a demonstration of provisioning an Amazon EKS cluster using Terraform for learning and portfolio purposes. To keep the project focused and within practical constraints such as development time and AWS Free Tier/cost considerations, some production-grade features and best practices were not implemented
+
+The following limitations should be considered before using this project in a production environment.
 
 ---
 
@@ -918,21 +920,29 @@ Production environments typically include monitoring and logging solutions such 
 
 ---
 
-### Manual CI/CD Integration
+### Simplified CI/CD Pipeline
 
-Infrastructure deployment is performed manually using Terraform CLI.
+The project includes a CI/CD pipeline to automate infrastructure provisioning.
 
-In production, infrastructure changes are commonly automated using CI/CD pipelines with approval workflows.
+For simplicity, manual approval stages have been omitted from the pipeline.
 
+In a production environment, CI/CD pipelines typically include:
+
+- Manual approval stages
+- Change management workflows
+- Notify Depoyment status to slack channel or Email. 
 ---
 
-### No Automated Testing
+### Limited Infrastructure Validation
 
-The project does not include automated validation or testing for Terraform configurations.
+The project includes Terraform validation as part of the deployment workflow.
 
-Production implementations may include:
+However, additional validation and quality checks commonly used in production environments are outside the scope of this project.
 
-- Terraform validation
-- Static analysis
-- Security scanning
+Examples include:
+
+- Static code analysis
+- Infrastructure security scanning
+- Policy-as-Code validation
+- Automated infrastructure testing
 - Infrastructure testing
