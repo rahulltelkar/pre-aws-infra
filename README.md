@@ -851,3 +851,88 @@ aws sts get-caller-identity
 ```
 
 Confirm that the IAM user or role has the required permissions to provision the infrastructure.
+
+## Known Limitations
+
+This project was developed as a demonstration of provisioning an Amazon EKS cluster using Terraform and is intended for learning and portfolio purposes. The following limitations should be considered before using it in a production environment.
+
+---
+
+### Public Subnet Deployment
+
+The Amazon EKS worker nodes are deployed in public subnets for simplicity.
+
+In a production environment, worker nodes are typically deployed in private subnets with controlled outbound internet access through a NAT Gateway.
+
+---
+
+### Single Environment Configuration
+
+The project provisions a single environment.
+
+Production deployments typically maintain separate environments such as:
+
+- Development
+- Staging
+- Production
+
+using separate Terraform workspaces, state files, or accounts.
+
+---
+
+### Limited High Availability Configuration
+
+The project demonstrates a functional EKS deployment but does not implement advanced high availability strategies such as:
+
+- Multi-region deployment
+- Disaster recovery
+- Cross-region backups
+
+---
+
+### Basic Security Configuration
+
+The project implements IAM roles, security groups, and IAM Roles for Service Accounts (IRSA).
+
+However, additional production security measures are outside the scope of this project, including:
+
+- AWS Secrets Manager
+- AWS WAF
+- Network Policies
+- Pod Security Admission
+- Image signing and verification
+
+---
+
+### No Monitoring and Logging Stack
+
+The project focuses on infrastructure provisioning and does not deploy a complete observability stack.
+
+Production environments typically include monitoring and logging solutions such as:
+
+- Prometheus
+- Grafana
+- Fluent Bit
+- CloudWatch
+- Loki
+
+---
+
+### Manual CI/CD Integration
+
+Infrastructure deployment is performed manually using Terraform CLI.
+
+In production, infrastructure changes are commonly automated using CI/CD pipelines with approval workflows.
+
+---
+
+### No Automated Testing
+
+The project does not include automated validation or testing for Terraform configurations.
+
+Production implementations may include:
+
+- Terraform validation
+- Static analysis
+- Security scanning
+- Infrastructure testing
