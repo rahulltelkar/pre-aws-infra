@@ -112,3 +112,54 @@ This project uses a combination of industry-standard DevOps tools to demonstrate
 - **AWS Load Balancer Controller** provides native integration between Kubernetes Ingress resources and AWS Application Load Balancers.
 - **Amazon S3** and **DynamoDB** provide secure remote state storage and locking for collaborative Terraform workflows.
 - **IAM Roles for Service Accounts (IRSA)** follows AWS security best practices by eliminating the need to store long-lived AWS credentials inside containers.
+
+  ## AWS Services Used
+
+The following AWS services are provisioned and configured as part of this project.
+
+| AWS Service | Purpose |
+|-------------|---------|
+| Amazon VPC | Provides an isolated virtual network for the Kubernetes cluster. |
+| Public Subnets | Host the EKS worker nodes and internet-facing resources. |
+| Internet Gateway | Enables internet connectivity for resources within the VPC. |
+| Route Tables | Control network traffic routing within the VPC. |
+| Security Groups | Act as virtual firewalls to control inbound and outbound traffic. |
+| Amazon EKS | Provides the managed Kubernetes control plane. |
+| EC2 Managed Node Group | Hosts the Kubernetes worker nodes that run application workloads. |
+| IAM | Creates roles and policies required by the EKS cluster, worker nodes, and AWS Load Balancer Controller. |
+| IAM OIDC Provider | Enables IAM Roles for Service Accounts (IRSA) for secure AWS service access from Kubernetes workloads. |
+| Application Load Balancer (ALB) | Routes external HTTP/HTTPS traffic to the Kubernetes application. |
+| Amazon S3 | Stores the remote Terraform state file. |
+| Amazon DynamoDB | Provides state locking to prevent concurrent Terraform operations. |
+
+### Infrastructure Provisioning Summary
+
+Terraform provisions all core AWS infrastructure required to host the Kubernetes platform, including networking, identity and access management, and the Amazon EKS cluster.
+
+The AWS Load Balancer Controller is installed within the Kubernetes cluster and dynamically provisions an Application Load Balancer (ALB) whenever a Kubernetes Ingress resource is created.
+
+This separation of responsibilities keeps Terraform focused on infrastructure provisioning while allowing Kubernetes to manage application-specific resources.
+
+### Responsibility Split
+
+| Managed By Terraform | Managed By Kubernetes |
+|----------------------|-----------------------|
+| VPC | Deployment |
+| Public Subnets | Service |
+| Internet Gateway | Ingress |
+| Route Tables | Pods |
+| Security Groups | ReplicaSets |
+| IAM Roles | Namespaces |
+| OIDC Provider | ConfigMaps |
+| Amazon EKS Cluster | Secrets |
+| Managed Node Group | Application Load Balancer (via AWS Load Balancer Controller) |
+| S3 Backend | |
+| DynamoDB Lock Table | |
+
+### Why This Design?
+
+Separating infrastructure provisioning from application deployment follows Infrastructure as Code (IaC) best practices.
+
+Terraform is responsible for provisioning long-lived cloud infrastructure, while Kubernetes manages the lifecycle of application workloads running on the cluster.
+
+This approach improves modularity, simplifies infrastructure maintenance, and aligns with production deployment patterns commonly used in modern Platform Engineering teams.
