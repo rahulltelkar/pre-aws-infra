@@ -185,3 +185,67 @@ Instead of placing all resources into a single Terraform file, the infrastructur
 - Simplifies troubleshooting and future enhancements.
 - Encourages code reuse and easier collaboration.
 - Aligns with Infrastructure as Code (IaC) best practices followed in production environments.
+
+## Deployment Workflow
+
+The deployment process consists of two major phases:
+
+1. **Infrastructure Provisioning** using Terraform.
+2. **Application Deployment** using Kubernetes manifests.
+
+The workflow below illustrates the complete deployment lifecycle.
+
+```text
+Developer
+    │
+    ▼
+Terraform Init
+    │
+    ▼
+Terraform Plan
+    │
+    ▼
+Terraform Apply
+    │
+    ▼
+AWS Infrastructure Provisioned
+(VPC, IAM, EKS, Node Group)
+    │
+    ▼
+Update kubeconfig
+    │
+    ▼
+Deploy Kubernetes Resources
+(Deployment, Service, Ingress)
+    │
+    ▼
+AWS Load Balancer Controller
+    │
+    ▼
+Application Load Balancer (ALB)
+    │
+    ▼
+External Users Access Application
+```
+
+### Deployment Stages
+
+| Stage | Description |
+|--------|-------------|
+| Initialize Terraform | Downloads the required providers and configures the remote backend. |
+| Plan Infrastructure | Generates an execution plan showing the resources Terraform will create. |
+| Apply Infrastructure | Provisions AWS networking, IAM resources, and the Amazon EKS cluster. |
+| Configure kubectl | Updates the local kubeconfig to communicate with the EKS cluster. |
+| Deploy Application | Creates the Kubernetes Deployment, Service, and Ingress resources. |
+| Provision ALB | AWS Load Balancer Controller automatically creates an Application Load Balancer based on the Ingress resource. |
+| Validate Deployment | Verify that the application is accessible through the ALB endpoint. |
+
+### Infrastructure vs Application
+
+This project intentionally separates infrastructure provisioning from application deployment.
+
+- **Terraform** provisions long-lived AWS infrastructure such as the VPC, IAM resources, Amazon EKS cluster, and worker nodes.
+- **Kubernetes** manages application resources such as Deployments, Services, Ingresses, and Pods.
+- **AWS Load Balancer Controller** bridges Kubernetes and AWS by dynamically creating an Application Load Balancer whenever an Ingress resource is deployed.
+
+This separation follows Infrastructure as Code (IaC) best practices and mirrors production deployment workflows.
