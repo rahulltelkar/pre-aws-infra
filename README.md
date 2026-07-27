@@ -177,14 +177,6 @@ terraform/
 ├── outputs.tf                 # Terraform outputs
 └── policies/                  # Custom IAM policy documents
 ```
-### Why This Structure?
-
-Instead of placing all resources into a single Terraform file, the infrastructure is organized by responsibility. This modular approach offers several benefits:
-
-- Improves readability by grouping related resources.
-- Simplifies troubleshooting and future enhancements.
-- Encourages code reuse and easier collaboration.
-- Aligns with Infrastructure as Code (IaC) best practices followed in production environments.
 
 ## Deployment Workflow
 
