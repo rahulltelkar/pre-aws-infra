@@ -573,3 +573,132 @@ The issue was resolved by:
 3. Running `terraform destroy` again.
 
 This highlights the importance of cleaning up Kubernetes-managed AWS resources before destroying the underlying infrastructure.
+
+## Best Practices
+
+The following best practices are recommended when provisioning, managing, and maintaining the infrastructure in this project. Adhering to these practices improves reliability, security, maintainability, and aligns with Infrastructure as Code (IaC) principles.
+
+---
+
+### Use a Remote Terraform Backend
+
+Store the Terraform state remotely using Amazon S3 and enable state locking with Amazon DynamoDB.
+
+Benefits include:
+
+- Centralized state management
+- Team collaboration
+- State locking to prevent concurrent modifications
+- Reduced risk of state corruption
+
+---
+
+### Review Infrastructure Changes Before Applying
+
+Always review the Terraform execution plan before applying changes.
+
+```bash
+terraform plan
+```
+
+Reviewing the execution plan helps identify unintended infrastructure modifications before they are applied to the AWS environment.
+
+---
+
+### Organize Terraform Configuration
+
+Organize Terraform resources into logical files based on their responsibility instead of placing all resources in a single configuration file.
+
+For example:
+
+- `vpc.tf` – Networking resources
+- `eks.tf` – Amazon EKS cluster and node group
+- `iam.tf` – IAM roles and policies
+- `security-groups.tf` – Security group definitions
+
+This approach improves:
+
+- Readability
+- Maintainability
+- Troubleshooting
+- Future scalability
+
+---
+
+### Avoid Manual Infrastructure Changes
+
+Avoid modifying Terraform-managed resources directly through the AWS Management Console.
+
+Manual changes can introduce configuration drift between the deployed infrastructure and the Terraform state file, making future deployments unpredictable.
+
+All infrastructure changes should be performed through Terraform whenever possible.
+
+---
+
+### Separate Infrastructure from Application Deployment
+
+Keep infrastructure provisioning and application deployment independent.
+
+In this project:
+
+- Terraform provisions AWS infrastructure.
+- Kubernetes manages application workloads.
+- AWS Load Balancer Controller dynamically provisions the Application Load Balancer (ALB).
+
+This separation enables:
+
+- Independent infrastructure and application lifecycles
+- Easier maintenance
+- Better scalability
+- Alignment with modern Platform Engineering practices
+
+---
+
+### Use Version Control
+
+Store all Terraform configuration in a version control system such as Git.
+
+Version control provides:
+
+- Change history
+- Collaboration through pull requests
+- Peer reviews
+- Rollback capability
+- Traceability of infrastructure changes
+
+---
+
+### Verify Infrastructure After Deployment
+
+After provisioning infrastructure, verify that all resources have been created successfully before deploying applications.
+
+Recommended verification steps include:
+
+- Verify the Amazon EKS cluster is in the **Active** state.
+- Confirm worker nodes are in the **Ready** state.
+- Verify Kubernetes system pods are running.
+- Confirm Terraform state is stored in the remote backend.
+
+Performing these checks helps identify deployment issues early.
+
+---
+
+### Clean Up Kubernetes Resources Before Destroying Infrastructure
+
+Before running `terraform destroy`, remove Kubernetes workloads that provision AWS resources, such as Ingress resources managed by the AWS Load Balancer Controller.
+
+This helps ensure that AWS resources such as:
+
+- Application Load Balancers (ALBs)
+- Elastic Network Interfaces (ENIs)
+- Security Groups
+
+are cleaned up properly, preventing dependency issues during infrastructure destruction.
+
+---
+
+### Preserve the Terraform Backend
+
+If the remote backend will be reused for future deployments, remove the Amazon S3 bucket and DynamoDB table from the Terraform state before destroying the infrastructure.
+
+This prevents accidental deletion of backend resources while allowing Terraform to safely remove the remaining infrastructure.
