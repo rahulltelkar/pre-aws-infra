@@ -1,6 +1,4 @@
-# pre-aws-infra
-
-# AWS EKS Two-Tier Application Deployment using Terraform
+#### AWS EKS Two-Tier Application Deployment using Terraform
 
 Deploy a production-ready Amazon Elastic Kubernetes Service (EKS) cluster using Terraform and host a two-tier application on Kubernetes with AWS Application Load Balancer (ALB) Ingress.
 
