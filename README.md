@@ -82,3 +82,33 @@ The deployment follows the sequence below:
 | Kubernetes Ingress | Defines external routing rules for the application. |
 | AWS Load Balancer Controller | Automatically provisions an ALB based on Kubernetes Ingress resources. |
 | Application Load Balancer | Routes external HTTP/HTTPS traffic to the application running inside Kubernetes. |
+
+## Technology Stack
+
+The project leverages the following technologies to provision infrastructure, deploy applications, and manage Kubernetes resources.
+
+| Category | Technology | Purpose |
+|----------|------------|---------|
+| Infrastructure as Code | Terraform | Provisions and manages AWS infrastructure in a declarative manner. |
+| Cloud Platform | Amazon Web Services (AWS) | Provides the cloud infrastructure required to host the Kubernetes platform. |
+| Container Orchestration | Amazon EKS | Managed Kubernetes service used to deploy and manage containerized workloads. |
+| Container Runtime | Docker | Packages the application into portable container images. |
+| Cluster Management | Kubernetes | Orchestrates application deployment, scaling, networking, and lifecycle management. |
+| Networking | Amazon VPC | Provides network isolation and connectivity for the EKS cluster. |
+| Load Balancing | AWS Application Load Balancer (ALB) | Exposes the application securely to external users. |
+| Ingress Controller | AWS Load Balancer Controller | Automatically provisions and manages ALBs from Kubernetes Ingress resources. |
+| Authentication | IAM & IRSA | Enables secure access between Kubernetes workloads and AWS services without static credentials. |
+| State Management | Amazon S3 | Stores the remote Terraform state file. |
+| State Locking | Amazon DynamoDB | Prevents concurrent Terraform operations by providing state locking. |
+| Command Line Tools | AWS CLI, kubectl | Used to provision, configure, and manage AWS resources and Kubernetes clusters. |
+
+### Why These Technologies?
+
+This project uses a combination of industry-standard DevOps tools to demonstrate modern cloud infrastructure provisioning and Kubernetes platform management.
+
+- **Terraform** enables repeatable and version-controlled infrastructure deployments.
+- **Amazon EKS** eliminates the operational overhead of managing the Kubernetes control plane.
+- **Docker** ensures applications are packaged consistently across environments.
+- **AWS Load Balancer Controller** provides native integration between Kubernetes Ingress resources and AWS Application Load Balancers.
+- **Amazon S3** and **DynamoDB** provide secure remote state storage and locking for collaborative Terraform workflows.
+- **IAM Roles for Service Accounts (IRSA)** follows AWS security best practices by eliminating the need to store long-lived AWS credentials inside containers.
