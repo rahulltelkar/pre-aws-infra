@@ -1,3 +1,10 @@
+![AWS](https://img.shields.io/badge/AWS-EKS-orange)
+![Terraform](https://img.shields.io/badge/Terraform-1.x-purple)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-1.33-blue)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![Helm](https://img.shields.io/badge/Helm-3.x-0F1689)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-red)
+
 # AWS EKS Two-Tier Application Deployment using Terraform
 
 Deploy a production-ready Amazon Elastic Kubernetes Service (EKS) cluster using Terraform and host a two-tier application on Kubernetes with AWS Application Load Balancer (ALB) Ingress.
